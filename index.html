@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M019 Professional English — Country Study</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#172033;
+      --muted:#657089;
+      --line:#e6e9f2;
+      --accent:#536dfe;
+      --accent2:#00a6a6;
+      --good:#0f9f6e;
+      --bad:#d84545;
+      --soft:#eef2ff;
+      --shadow:0 12px 32px rgba(23,32,51,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:radial-gradient(circle at top left, #e6fff8 0, transparent 30%),
+                 radial-gradient(circle at top right, #eef2ff 0, transparent 34%),
+                 var(--bg);
+      color:var(--ink);
+      line-height:1.6;
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:22px}
+    header.hero{
+      margin:18px 0 22px;
+      padding:34px;
+      border-radius:32px;
+      background:linear-gradient(135deg, #ffffff 0%, #eef2ff 45%, #e7fff8 100%);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.75);
+      position:relative;
+      overflow:hidden;
+    }
+    header.hero:after{
+      content:"";
+      position:absolute;
+      right:-60px;
+      bottom:-70px;
+      width:230px;
+      height:230px;
+      background:rgba(83,109,254,.12);
+      border-radius:50%;
+    }
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#fff;padding:8px 13px;border-radius:999px;color:var(--accent);font-weight:800;border:1px solid var(--line)}
+    h1{font-size:clamp(32px,6vw,64px);line-height:1.03;margin:18px 0 12px;letter-spacing:-.04em}
+    .lead{font-size:18px;color:var(--muted);max-width:820px;margin:0}
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0 0;
+      align-items:center;
+      position:relative;
+      z-index:1;
+    }
+    .lang button,.nav a,.pill{
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      border-radius:999px;
+      padding:10px 14px;
+      text-decoration:none;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 6px 16px rgba(23,32,51,.05);
+    }
+    .lang button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .nav{display:flex;flex-wrap:wrap;gap:8px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .span-4{grid-column:span 4}
+    .span-6{grid-column:span 6}
+    .span-8{grid-column:span 8}
+    .span-12{grid-column:span 12}
+    h2{font-size:30px;margin:10px 0 14px;letter-spacing:-.025em}
+    h3{font-size:22px;margin:4px 0 10px}
+    .muted{color:var(--muted)}
+    .mini{font-size:13px;color:var(--muted)}
+    .country{
+      display:flex;
+      align-items:flex-start;
+      gap:14px;
+    }
+    .flag{
+      width:52px;height:52px;display:grid;place-items:center;
+      border-radius:18px;background:var(--soft);font-size:28px;flex:0 0 auto;
+    }
+    .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+    .fact{background:#f8f9fd;border:1px solid var(--line);padding:10px;border-radius:14px}
+    .term{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:10px 0}
+    .term b{color:var(--accent)}
+    .note{background:#fff7df;border:1px solid #f2df9f;border-radius:18px;padding:14px}
+    .q{
+      margin:14px 0;
+      padding:16px;
+      background:#fafbff;
+      border:1px solid var(--line);
+      border-radius:18px;
+    }
+    .q-title{font-weight:900;margin-bottom:10px}
+    label.option{
+      display:block;
+      padding:10px 12px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      margin:8px 0;
+      cursor:pointer;
+    }
+    label.option:hover{border-color:var(--accent)}
+    .result{
+      display:none;
+      margin-top:10px;
+      padding:12px;
+      border-radius:12px;
+      background:#fff;
+      border:1px solid var(--line);
+      font-weight:700;
+    }
+    .result.good{color:var(--good);border-color:rgba(15,159,110,.35);background:#f0fff8}
+    .result.bad{color:var(--bad);border-color:rgba(216,69,69,.35);background:#fff4f4}
+    .btn{
+      border:0;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--accent),#7c4dff);
+      color:white;
+      padding:13px 18px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 12px 24px rgba(83,109,254,.25);
+    }
+    .btn.secondary{background:#fff;color:var(--accent);border:1px solid var(--line);box-shadow:none}
+    .score{
+      margin:16px 0;
+      padding:16px;
+      border-radius:18px;
+      background:#eef2ff;
+      color:#28306b;
+      font-weight:900;
+      display:none;
+    }
+    footer{padding:28px;text-align:center;color:var(--muted)}
+    [data-lang="ru"] .en,[data-lang="en"] .ru{display:none!important}
+    @media(max-width:850px){
+      .span-4,.span-6,.span-8{grid-column:span 12}
+      header.hero{padding:24px}
+      .facts{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body data-lang="en">
+  <div class="wrap">
+    <header class="hero">
+      <div class="badge">M019 · Professional English · Country Study</div>
+      <h1>
+        <span class="en">English-speaking Countries</span>
+        <span class="ru">Англоговорящие страны</span>
+      </h1>
+      <p class="lead en">A bilingual preparation website for Professional English M019. The content combines country study, intercultural communication, global competence, diversity and exam-style practice.</p>
+      <p class="lead ru">Двуязычный сайт для подготовки по Professional English M019. Материал объединяет страноведение, межкультурную коммуникацию, глобальную компетентность, разнообразие и тестовые задания.</p>
+
+      <div class="topbar">
+        <div class="lang">
+          <button class="active" onclick="setLang('en')" id="btnEn">EN</button>
+          <button onclick="setLang('ru')" id="btnRu">RU</button>
+        </div>
+        <nav class="nav">
+          <a href="#overview"><span class="en">Overview</span><span class="ru">Обзор</span></a>
+          <a href="#countries"><span class="en">Countries</span><span class="ru">Страны</span></a>
+          <a href="#concepts"><span class="en">M019 Concepts</span><span class="ru">Понятия M019</span></a>
+          <a href="#test"><span class="en">Test</span><span class="ru">Тест</span></a>
+          <a href="#sources"><span class="en">Sources</span><span class="ru">Источники</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <section id="overview" class="grid">
+      <div class="card span-8">
+        <h2><span class="en">What is Country Study?</span><span class="ru">Что такое Country Study?</span></h2>
+        <p class="en">Country Study is the study of countries through their geography, political system, language, culture, symbols, education, migration, diversity and international role. In Professional English it is useful because students need to understand English-speaking societies and communicate across cultures.</p>
+        <p class="ru">Country Study — это изучение стран через географию, политическую систему, язык, культуру, символы, образование, миграцию, разнообразие и международную роль. В Professional English это важно, потому что студент должен понимать англоговорящие общества и общаться в межкультурной среде.</p>
+      </div>
+      <div class="card span-4">
+        <h3><span class="en">Exam focus</span><span class="ru">Фокус теста</span></h3>
+        <p class="en muted">Capitals, official languages, forms of government, parts of the UK, cultural identity, diversity, migration, global competence.</p>
+        <p class="ru muted">Столицы, официальные языки, формы правления, части Великобритании, культурная идентичность, разнообразие, миграция, глобальная компетентность.</p>
+      </div>
+    </section>
+
+    <section id="countries" style="margin-top:18px">
+      <h2><span class="en">Core English-speaking Countries</span><span class="ru">Основные англоговорящие страны</span></h2>
+      <div class="grid">
+        <div class="card span-6 country">
+          <div class="flag">🇬🇧</div>
+          <div>
+            <h3><span class="en">The United Kingdom</span><span class="ru">Соединённое Королевство</span></h3>
+            <p class="en">The UK consists of England, Scotland, Wales and Northern Ireland. It is a constitutional monarchy with London as the capital.</p>
+            <p class="ru">В состав UK входят Англия, Шотландия, Уэльс и Северная Ирландия. Это конституционная монархия со столицей в Лондоне.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>London</div>
+              <div class="fact"><b>System</b><br>Constitutional monarchy</div>
+              <div class="fact"><b>Key idea</b><br>Great Britain ≠ UK</div>
+              <div class="fact"><b>Country study</b><br>identity, monarchy, regions</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6 country">
+          <div class="flag">🇺🇸</div>
+          <div>
+            <h3><span class="en">The United States of America</span><span class="ru">Соединённые Штаты Америки</span></h3>
+            <p class="en">The USA is a federal republic. Its capital is Washington, D.C. The country is strongly associated with immigration, cultural diversity and global influence.</p>
+            <p class="ru">США — федеративная республика. Столица — Вашингтон, округ Колумбия. Страна часто связывается с иммиграцией, культурным разнообразием и глобальным влиянием.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>Washington, D.C.</div>
+              <div class="fact"><b>System</b><br>Federal republic</div>
+              <div class="fact"><b>Key idea</b><br>50 states</div>
+              <div class="fact"><b>Country study</b><br>federalism, migration, diversity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6 country">
+          <div class="flag">🇨🇦</div>
+          <div>
+            <h3><span class="en">Canada</span><span class="ru">Канада</span></h3>
+            <p class="en">Canada is a bilingual country at the federal level: English and French are official languages. Its capital is Ottawa.</p>
+            <p class="ru">Канада является двуязычной страной на федеральном уровне: английский и французский имеют официальный статус. Столица — Оттава.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>Ottawa</div>
+              <div class="fact"><b>Languages</b><br>English and French</div>
+              <div class="fact"><b>System</b><br>Constitutional monarchy / federal state</div>
+              <div class="fact"><b>Country study</b><br>bilingualism, multiculturalism</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6 country">
+          <div class="flag">🇦🇺</div>
+          <div>
+            <h3><span class="en">Australia</span><span class="ru">Австралия</span></h3>
+            <p class="en">Australia is both a country and a continent. Its capital is Canberra, while Sydney is one of its largest and best-known cities.</p>
+            <p class="ru">Австралия одновременно является страной и континентом. Столица — Канберра, а Сидней — один из крупнейших и самых известных городов.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>Canberra</div>
+              <div class="fact"><b>Main language</b><br>English</div>
+              <div class="fact"><b>Key idea</b><br>Country-continent</div>
+              <div class="fact"><b>Country study</b><br>Indigenous cultures, migration</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6 country">
+          <div class="flag">🇳🇿</div>
+          <div>
+            <h3><span class="en">New Zealand</span><span class="ru">Новая Зеландия</span></h3>
+            <p class="en">New Zealand is an island country in the Pacific region. Its capital is Wellington. It is often studied together with the Māori cultural context.</p>
+            <p class="ru">Новая Зеландия — островное государство в Тихоокеанском регионе. Столица — Веллингтон. В страноведении часто рассматривается вместе с культурным контекстом маори.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>Wellington</div>
+              <div class="fact"><b>Region</b><br>Pacific / Oceania</div>
+              <div class="fact"><b>Key idea</b><br>Island country</div>
+              <div class="fact"><b>Country study</b><br>Māori culture, identity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card span-6 country">
+          <div class="flag">🇮🇪</div>
+          <div>
+            <h3><span class="en">Ireland</span><span class="ru">Ирландия</span></h3>
+            <p class="en">Ireland is an English-speaking European country with its own national identity, history and cultural traditions. Its capital is Dublin.</p>
+            <p class="ru">Ирландия — англоговорящая европейская страна со своей национальной идентичностью, историей и культурными традициями. Столица — Дублин.</p>
+            <div class="facts">
+              <div class="fact"><b>Capital</b><br>Dublin</div>
+              <div class="fact"><b>Region</b><br>Europe</div>
+              <div class="fact"><b>Key idea</b><br>Republic of Ireland ≠ Northern Ireland</div>
+              <div class="fact"><b>Country study</b><br>language, literature, identity</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="concepts" style="margin-top:18px" class="grid">
+      <div class="card span-6">
+        <h2><span class="en">M019 Concepts</span><span class="ru">Понятия M019</span></h2>
+        <div class="term"><b>diversity</b><span class="en">variety among people, cultures and systems</span><span class="ru">разнообразие людей, культур и систем</span></div>
+        <div class="term"><b>global competence</b><span class="en">ability to understand and act in an interconnected world</span><span class="ru">умение понимать взаимосвязанный мир и действовать в нём</span></div>
+        <div class="term"><b>migration</b><span class="en">movement of people from one place to another</span><span class="ru">перемещение людей из одного места в другое</span></div>
+        <div class="term"><b>cultural context</b><span class="en">social and cultural environment of communication</span><span class="ru">социальная и культурная среда общения</span></div>
+        <div class="term"><b>human rights</b><span class="en">basic rights and freedoms of all people</span><span class="ru">основные права и свободы всех людей</span></div>
+      </div>
+      <div class="card span-6">
+        <h2><span class="en">How to answer Country Study questions</span><span class="ru">Как отвечать на вопросы Country Study</span></h2>
+        <p class="en">First identify the category of the question: capital, country structure, language, government, symbol, culture or M019 concept. Then choose the option from the same category. Do not confuse cities with countries or political systems with cultural concepts.</p>
+        <p class="ru">Сначала определите категорию вопроса: столица, состав страны, язык, форма правления, символ, культура или понятие M019. Затем выбирайте вариант из этой же категории. Не путайте города со странами, а политические системы — с культурными понятиями.</p>
+        <div class="note">
+          <b class="en">Example:</b><b class="ru">Пример:</b>
+          <span class="en">If the question asks about the capital of Canada, all answer choices are cities: Ottawa, Canberra, Dublin, London, Wellington.</span>
+          <span class="ru">Если вопрос спрашивает столицу Канады, все варианты должны быть городами: Ottawa, Canberra, Dublin, London, Wellington.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="test" style="margin-top:18px">
+      <div class="card">
+        <h2><span class="en">Country Study Test</span><span class="ru">Тест по Country Study</span></h2>
+        <p class="en muted">Choose one correct answer for each question. After checking, explanations will appear under every question.</p>
+        <p class="ru muted">Выберите один правильный ответ в каждом вопросе. После проверки объяснения появятся под каждым вопросом.</p>
+        <div id="quiz"></div>
+        <button class="btn" onclick="checkQuiz()"><span class="en">Check answers</span><span class="ru">Проверить ответы</span></button>
+        <button class="btn secondary" onclick="resetQuiz()"><span class="en">Reset</span><span class="ru">Сбросить</span></button>
+        <div id="score" class="score"></div>
+      </div>
+    </section>
+
+    <section id="sources" style="margin-top:18px">
+      <div class="card">
+        <h2><span class="en">Sources used</span><span class="ru">Использованные источники</span></h2>
+        <p class="en">1. D. Tuyakayeva, I. Seliverstova, Z. Ainabayeva, S. Alpysbayeva. <i>Profession-Oriented Foreign Language in the Context of Intercultural Communication</i>. Almaty: Polilingva, 2018.</p>
+        <p class="ru">1. D. Tuyakayeva, I. Seliverstova, Z. Ainabayeva, S. Alpysbayeva. <i>Profession-Oriented Foreign Language in the Context of Intercultural Communication</i>. Алматы: Polilingva, 2018.</p>
+        <p class="en">2. Professional English M019 — Unit 2 Diversity of the World: global competence, diversity, migration, cultural context and human rights vocabulary.</p>
+        <p class="ru">2. Professional English M019 — Unit 2 Diversity of the World: лексика по темам global competence, diversity, migration, cultural context и human rights.</p>
+        <p class="en">3. Country study facts were checked against public reference materials about the UK, USA, Canada, Australia and New Zealand.</p>
+        <p class="ru">3. Страноведческие факты сверены с открытыми справочными материалами о UK, USA, Canada, Australia и New Zealand.</p>
+      </div>
+    </section>
+
+    <footer>
+      © Nazerke. <span class="en">All rights reserved.</span><span class="ru">Все права защищены.</span>
+    </footer>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        en:"Which country consists of England, Scotland, Wales and Northern Ireland?",
+        ru:"Какая страна состоит из Англии, Шотландии, Уэльса и Северной Ирландии?",
+        options:["The United Kingdom","The United States","Canada","Australia","New Zealand"],
+        answer:0,
+        expEn:"The United Kingdom is made up of four constituent parts: England, Scotland, Wales and Northern Ireland.",
+        expRu:"Соединённое Королевство состоит из четырёх частей: Англии, Шотландии, Уэльса и Северной Ирландии."
+      },
+      {
+        en:"What is the capital of Canada?",
+        ru:"Какая столица Канады?",
+        options:["Ottawa","Canberra","Dublin","London","Wellington"],
+        answer:0,
+        expEn:"Ottawa is the capital of Canada.",
+        expRu:"Оттава — столица Канады."
+      },
+      {
+        en:"Which city is the capital of Australia?",
+        ru:"Какой город является столицей Австралии?",
+        options:["Canberra","Sydney","Melbourne","Brisbane","Perth"],
+        answer:0,
+        expEn:"Canberra is the capital, while Sydney and Melbourne are major cities.",
+        expRu:"Канберра — столица, а Сидней и Мельбурн являются крупными городами."
+      },
+      {
+        en:"Which country is both a country and a continent in common country-study descriptions?",
+        ru:"Какая страна в страноведении часто описывается как страна и континент?",
+        options:["Australia","Canada","Ireland","New Zealand","The United Kingdom"],
+        answer:0,
+        expEn:"Australia is commonly described as a country-continent.",
+        expRu:"Австралия часто описывается как страна-континент."
+      },
+      {
+        en:"Which country has English and French as official languages at the federal level?",
+        ru:"В какой стране английский и французский имеют официальный статус на федеральном уровне?",
+        options:["Canada","Australia","The United States","New Zealand","Ireland"],
+        answer:0,
+        expEn:"Canada has two official languages at the federal level: English and French.",
+        expRu:"В Канаде два официальных языка на федеральном уровне: английский и французский."
+      },
+      {
+        en:"What is the capital of New Zealand?",
+        ru:"Какая столица Новой Зеландии?",
+        options:["Wellington","Auckland","Christchurch","Hamilton","Dunedin"],
+        answer:0,
+        expEn:"Wellington is the capital of New Zealand.",
+        expRu:"Веллингтон — столица Новой Зеландии."
+      },
+      {
+        en:"Which political system best describes the United States?",
+        ru:"Какая политическая система лучше всего описывает США?",
+        options:["Federal republic","Unitary monarchy","Absolute monarchy","Confederation of kingdoms","Parliamentary colony"],
+        answer:0,
+        expEn:"The USA is a federal republic with states and a federal government.",
+        expRu:"США — федеративная республика, где есть штаты и федеральное правительство."
+      },
+      {
+        en:"Which term means variety and difference among people, cultures, languages or systems?",
+        ru:"Какой термин означает разнообразие людей, культур, языков или систем?",
+        options:["Diversity","Monarchy","Capital","Federalism","Island state"],
+        answer:0,
+        expEn:"Diversity means variety and difference among people, cultures, languages or systems.",
+        expRu:"Diversity означает разнообразие и различие между людьми, культурами, языками или системами."
+      },
+      {
+        en:"Which M019 concept means the knowledge and skills needed to understand an interconnected world?",
+        ru:"Какое понятие M019 означает знания и навыки, необходимые для понимания взаимосвязанного мира?",
+        options:["Global competence","National anthem","State capital","Currency exchange","Regional border"],
+        answer:0,
+        expEn:"Global competence is the ability to understand and act in an interconnected world.",
+        expRu:"Global competence — это способность понимать взаимосвязанный мир и действовать в нём."
+      },
+      {
+        en:"Which pair correctly matches a country and its capital?",
+        ru:"Какая пара правильно соотносит страну и столицу?",
+        options:["Ireland — Dublin","Canada — Sydney","Australia — Ottawa","New Zealand — Canberra","UK — Washington, D.C."],
+        answer:0,
+        expEn:"Dublin is the capital of Ireland.",
+        expRu:"Дублин — столица Ирландии."
+      },
+      {
+        en:"Which country is most directly associated with Māori cultural context in country study?",
+        ru:"Какая страна в страноведении чаще всего связана с культурным контекстом маори?",
+        options:["New Zealand","Canada","Ireland","The United States","The United Kingdom"],
+        answer:0,
+        expEn:"Māori culture is central to New Zealand country study.",
+        expRu:"Культура маори является важной частью страноведения Новой Зеландии."
+      },
+      {
+        en:"Which statement correctly distinguishes Great Britain and the UK?",
+        ru:"Какое утверждение правильно различает Great Britain и UK?",
+        options:["Great Britain includes England, Scotland and Wales; the UK also includes Northern Ireland.","Great Britain includes Canada and Australia; the UK includes Ireland.","Great Britain is another name for London; the UK is England only.","Great Britain is the USA; the UK is Canada.","Great Britain includes Northern Ireland only; the UK includes Wales only."],
+        answer:0,
+        expEn:"Great Britain is England, Scotland and Wales; the UK is Great Britain plus Northern Ireland.",
+        expRu:"Great Britain включает Англию, Шотландию и Уэльс; UK включает Great Britain и Северную Ирландию."
+      },
+      {
+        en:"Which category does the question 'What is the capital of Canada?' belong to?",
+        ru:"К какой категории относится вопрос «Какая столица Канады?»?",
+        options:["Capital / city","Political ideology","Cultural stereotype","Grammar tense","Human-rights document"],
+        answer:0,
+        expEn:"The question asks for a capital city, so the answer choices should be cities.",
+        expRu:"Вопрос спрашивает столицу, поэтому варианты ответа должны быть городами."
+      },
+      {
+        en:"Which term refers to the movement of people from one place or country to another?",
+        ru:"Какой термин означает перемещение людей из одного места или страны в другое?",
+        options:["Migration","Evaluation","Monarchy","Constitution","Geography"],
+        answer:0,
+        expEn:"Migration means movement of people from one place or country to another.",
+        expRu:"Migration означает перемещение людей из одного места или страны в другое."
+      },
+      {
+        en:"Which country has Ottawa as its capital?",
+        ru:"У какой страны столица Оттава?",
+        options:["Canada","Australia","Ireland","New Zealand","The United States"],
+        answer:0,
+        expEn:"Ottawa is the capital of Canada.",
+        expRu:"Оттава — столица Канады."
+      },
+      {
+        en:"Which country has Washington, D.C. as its capital?",
+        ru:"У какой страны столица Washington, D.C.?",
+        options:["The United States","Canada","Australia","New Zealand","Ireland"],
+        answer:0,
+        expEn:"Washington, D.C. is the capital of the United States.",
+        expRu:"Washington, D.C. — столица США."
+      },
+      {
+        en:"Which answer is a political system rather than a city?",
+        ru:"Какой вариант является политической системой, а не городом?",
+        options:["Federal republic","Canberra","Ottawa","Dublin","Wellington"],
+        answer:0,
+        expEn:"Federal republic is a form of government; the other options are cities.",
+        expRu:"Federal republic — форма правления; остальные варианты — города."
+      },
+      {
+        en:"Which country is most closely associated with the capital London?",
+        ru:"Какая страна связана со столицей London?",
+        options:["The United Kingdom","The United States","Canada","Australia","New Zealand"],
+        answer:0,
+        expEn:"London is the capital of the United Kingdom.",
+        expRu:"Лондон — столица Соединённого Королевства."
+      },
+      {
+        en:"Which concept means the environment in which communication takes place?",
+        ru:"Какое понятие означает среду, в которой происходит общение?",
+        options:["Cultural context","Federal republic","Capital city","Island country","Currency system"],
+        answer:0,
+        expEn:"Cultural context is the cultural environment of communication.",
+        expRu:"Cultural context — это культурная среда общения."
+      },
+      {
+        en:"Which option is a correct set of English-speaking countries usually included in Country Study?",
+        ru:"Какой вариант правильно называет страны, часто включаемые в Country Study по англоговорящему миру?",
+        options:["UK, USA, Canada, Australia, New Zealand","France, Spain, Italy, Germany, Portugal","Brazil, Argentina, Chile, Peru, Colombia","China, Japan, Korea, Thailand, Vietnam","Turkey, Iran, Iraq, Syria, Lebanon"],
+        answer:0,
+        expEn:"The UK, USA, Canada, Australia and New Zealand are standard countries in English-speaking country study.",
+        expRu:"UK, USA, Canada, Australia и New Zealand обычно входят в страноведение англоговорящего мира."
+      },
+      {
+        en:"Which country-study topic best connects with Unit 2 'Diversity of the World'?",
+        ru:"Какая страноведческая тема лучше всего связана с Unit 2 'Diversity of the World'?",
+        options:["Migration and multicultural society","Verb forms in passive voice","Mathematical operations","Chemical elements","Sports scoring rules"],
+        answer:0,
+        expEn:"Migration and multicultural society are directly connected with diversity and global competence.",
+        expRu:"Миграция и мультикультурное общество прямо связаны с темами diversity и global competence."
+      },
+      {
+        en:"Which option is a cultural concept?",
+        ru:"Какой вариант является культурным понятием?",
+        options:["Cultural identity","Canberra","Ottawa","Federal republic","Washington, D.C."],
+        answer:0,
+        expEn:"Cultural identity is a cultural concept; the other options are cities or a political system.",
+        expRu:"Cultural identity — культурное понятие; остальные варианты — города или форма правления."
+      },
+      {
+        en:"Which country is an island country in the Pacific region?",
+        ru:"Какая страна является островным государством в Тихоокеанском регионе?",
+        options:["New Zealand","Canada","The United States","Ireland","The United Kingdom"],
+        answer:0,
+        expEn:"New Zealand is an island country in the Pacific region.",
+        expRu:"Новая Зеландия — островное государство в Тихоокеанском регионе."
+      },
+      {
+        en:"Which statement best describes Canada in Country Study?",
+        ru:"Какое утверждение лучше всего описывает Канаду в Country Study?",
+        options:["A bilingual and multicultural country with Ottawa as its capital","A country-continent with Canberra as its capital","A federal republic with Washington, D.C. as its capital","A country made up of England, Scotland, Wales and Northern Ireland","A Pacific island country with Wellington as its capital"],
+        answer:0,
+        expEn:"Canada is studied through bilingualism, multiculturalism and the capital Ottawa.",
+        expRu:"Канада изучается через двуязычие, мультикультурализм и столицу Оттаву."
+      },
+      {
+        en:"Which answer best describes globalized world?",
+        ru:"Какой вариант лучше всего описывает globalized world?",
+        options:["A world where countries, economies and cultures are closely connected","A world with no international communication","A world where every country has one culture","A world without migration","A world where English is not used internationally"],
+        answer:0,
+        expEn:"A globalized world is a world where countries, economies and cultures are closely connected.",
+        expRu:"Globalized world — это мир, где страны, экономики и культуры тесно связаны."
+      },
+      {
+        en:"Which option is the most suitable answer to a question about human rights advocacy?",
+        ru:"Какой вариант лучше всего подходит к вопросу о human rights advocacy?",
+        options:["Public support and action for human rights","The capital city of a country","The name of a national currency","A type of island geography","A form of weather pattern"],
+        answer:0,
+        expEn:"Human rights advocacy means public support and action for human rights.",
+        expRu:"Human rights advocacy означает публичную поддержку и действия в защиту прав человека."
+      },
+      {
+        en:"Which country-study mistake should be avoided?",
+        ru:"Какую ошибку в Country Study нужно избегать?",
+        options:["Confusing the UK with Great Britain","Matching Ottawa with Canada","Identifying Canberra as Australia’s capital","Recognizing Wellington as New Zealand’s capital","Connecting diversity with multicultural society"],
+        answer:0,
+        expEn:"A common mistake is confusing the UK with Great Britain because they are not identical terms.",
+        expRu:"Частая ошибка — путать UK и Great Britain, потому что это не полностью одинаковые понятия."
+      },
+      {
+        en:"Which item is connected with the USA in country study?",
+        ru:"Какой пункт связан с США в Country Study?",
+        options:["Federal republic and Washington, D.C.","Constitutional monarchy and Ottawa","Bilingual federal capital and Dublin","Pacific island country and London","Country-continent and Wellington"],
+        answer:0,
+        expEn:"The USA is a federal republic and its capital is Washington, D.C.",
+        expRu:"США — федеративная республика, столица — Washington, D.C."
+      },
+      {
+        en:"Which term means reliable and trustworthy information?",
+        ru:"Какой термин означает надёжную и заслуживающую доверия информацию?",
+        options:["Credible information","Differential access","Bystander","Outmoded system","National symbol"],
+        answer:0,
+        expEn:"Credible information means reliable and trustworthy information.",
+        expRu:"Credible information означает надёжную и достоверную информацию."
+      },
+      {
+        en:"Which concept is needed when comparing different viewpoints about migration?",
+        ru:"Какое понятие нужно при сравнении разных точек зрения о миграции?",
+        options:["Weigh perspectives","Name capitals","List currencies","Describe weather","Memorize flags only"],
+        answer:0,
+        expEn:"Weigh perspectives means understanding, comparing and evaluating different viewpoints.",
+        expRu:"Weigh perspectives означает понимать, сравнивать и оценивать разные точки зрения."
+      }
+    ];
+
+    function setLang(lang){
+      document.body.setAttribute('data-lang', lang);
+      document.documentElement.lang = lang;
+      document.getElementById('btnEn').classList.toggle('active', lang==='en');
+      document.getElementById('btnRu').classList.toggle('active', lang==='ru');
+      renderQuiz();
+      document.getElementById('score').style.display='none';
+    }
+
+    function currentLang(){
+      return document.body.getAttribute('data-lang') || 'en';
+    }
+
+    function renderQuiz(){
+      const lang = currentLang();
+      const quiz = document.getElementById('quiz');
+      quiz.innerHTML = quizData.map((q,i)=>{
+        const text = lang === 'en' ? q.en : q.ru;
+        const exp = lang === 'en' ? q.expEn : q.expRu;
+        return `<div class="q" id="q${i}">
+          <div class="q-title">${i+1}. ${text}</div>
+          ${q.options.map((opt,j)=>`
+            <label class="option">
+              <input type="radio" name="q${i}" value="${j}"> ${opt}
+            </label>
+          `).join('')}
+          <div class="result" id="r${i}" data-exp="${exp.replace(/"/g,'&quot;')}"></div>
+        </div>`;
+      }).join('');
+    }
+
+    function checkQuiz(){
+      const lang = currentLang();
+      let score = 0;
+      quizData.forEach((q,i)=>{
+        const checked = document.querySelector(`input[name="q${i}"]:checked`);
+        const r = document.getElementById(`r${i}`);
+        const exp = lang === 'en' ? q.expEn : q.expRu;
+        r.style.display = 'block';
+        r.className = 'result';
+        if(checked && Number(checked.value) === q.answer){
+          score++;
+          r.classList.add('good');
+          r.innerHTML = (lang==='en' ? 'Correct. ' : 'Правильно. ') + exp;
+        }else{
+          r.classList.add('bad');
+          r.innerHTML = (lang==='en' ? 'Incorrect. Correct answer: ' : 'Неправильно. Правильный ответ: ') + q.options[q.answer] + '. ' + exp;
+        }
+      });
+      const box = document.getElementById('score');
+      box.style.display='block';
+      box.innerHTML = lang==='en'
+        ? `Your score: ${score}/${quizData.length}`
+        : `Ваш результат: ${score}/${quizData.length}`;
+      box.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    function resetQuiz(){
+      document.querySelectorAll('input[type="radio"]').forEach(i=>i.checked=false);
+      document.querySelectorAll('.result').forEach(r=>{r.style.display='none'; r.className='result'; r.innerHTML='';});
+      document.getElementById('score').style.display='none';
+    }
+
+    renderQuiz();
+  </script>
+</body>
+</html>
